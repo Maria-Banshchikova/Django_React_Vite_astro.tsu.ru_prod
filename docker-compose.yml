@@ -1,0 +1,62 @@
+services:
+  # Сервис для PostgreSQL (база данных)
+  db:
+    image: postgres:17
+    container_name: astrotsu_db
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+      
+  # Сервис для Django (backend)    
+  backend:
+    build:
+      context: ./backend  # Смотрит Dockerfile в текущей директории (.)
+      dockerfile: Dockerfile # Имя Dockerfile для бэкенда
+    platform: linux/amd64
+    container_name: astrotsu_backend
+    env_file: .env.prod
+    ports:
+      - "8000:8000"  # Порт локальной машины: порт контейнера
+    environment:
+      # Переменные окружения для Django
+      - SECRET_KEY=${SECRET_KEY}
+      - DEBUG=${DEBUG}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - DB_ENGINE=${DB_ENGINE}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=db          # Имя сервиса базы данных
+      - DB_PORT=${DB_PORT}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD} # Пароль для суперпользователя в Docker
+    volumes:
+      # Монтируем папку для медиафайлов (будет создана на хосте)
+      - media_volume:/app/media
+      # Монтируем папку для собранных статических файлов (будет создана на хосте)
+      - static_volume:/app/staticfiles
+    depends_on:
+      - db # Дожидается старта сервиса базы данных
+
+  # Сервис для React (frontend)
+  frontend:
+    build:
+      context: ./frontend # Смотрит Dockerfile в текущей директории (.)
+      dockerfile: Dockerfile # Переименуйте ваш фронтенд Dockerfile в Dockerfile, или укажите другое имя
+    container_name: astrotsu_frontend
+    ports:
+      - "3000:80" # Порт локальной машины: порт Nginx в контейнере
+    depends_on:
+      - backend
+    volumes:
+      - static_volume:/staticfiles   # путь должен совпадать с alias в nginx
+      - media_volume:/media          # путь должен совпадать с alias в nginx 
+
+volumes:
+  postgres_data:
+  media_volume:
+  static_volume:

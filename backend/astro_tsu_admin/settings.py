@@ -1,21 +1,30 @@
 from pathlib import Path
+from dotenv import load_dotenv
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv()
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
+DATABASES = {
+    "default": {
+        "ENGINE": os.environ.get("DB_ENGINE"),
+        "NAME": os.environ.get("DB_NAME"),
+        "USER": os.environ.get("DB_USER"),
+        "PASSWORD": os.environ.get("DB_PASSWORD"),
+        "HOST": os.environ.get("DB_HOST"),
+        "PORT": os.environ.get("DB_PORT"),
+    }
+}
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-dic+w$v$sdk3ytp_juqkvkydq125x1c%tsh(j73k20*-86@6w3"
+SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-secret-key-for-dev")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(",")
 
 # Application definition
 
@@ -37,10 +46,22 @@ INSTALLED_APPS = [
 ]
 
 CKEDITOR_5_CONFIGS = {
-    'default': {
-        'toolbar': ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', 'insertImage', 'mediaEmbed'],
-        'image': {
-            'toolbar': ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side'],
+    "default": {
+        "toolbar": [
+            "heading",
+            "|",
+            "bold",
+            "italic",
+            "link",
+            "bulletedList",
+            "numberedList",
+            "blockQuote",
+            "imageUpload",
+            "insertImage",
+            "mediaEmbed",
+        ],
+        "image": {
+            "toolbar": ["imageTextAlternative", "imageStyle:full", "imageStyle:side"],
         },
     }
 }
@@ -74,17 +95,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "astro_tsu_admin.wsgi.application"
-
-
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
 
 
 # Password validation
@@ -135,12 +145,22 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Настройки CORS для связи с React-приложением
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # Адрес, где по умолчанию запускается Vite
-    "http://127.0.0.1:5173",
+    "http://localhost:3000",  # Адрес, где по умолчанию запускается Vite
+    "http://127.0.0.1:3000",
 ]
 # Для разработки можно временно разрешить все источники,
 # но на боевом сервере это категорически не рекомендуется.
 # CORS_ALLOW_ALL_ORIGINS = True
 
 CKEDITOR_5_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
-CKEDITOR_5_UPLOAD_PATH = "uploads/"  
+CKEDITOR_5_UPLOAD_PATH = "uploads/"
+
+# Безопасность
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+# CSRF доверенные источники (если используете формы на том же домене)
+CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',')
+# CORS (если API вызывается с фронта на том же домене – можно не включать, но на всякий случай)
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')

@@ -1,0 +1,230 @@
+/*.alumniSection {
+  background: linear-gradient(145deg, #07152b 0%, #0a1f3b 100%);
+  padding: 3rem 1rem;
+}*/
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: #ffd966;
+}
+
+/* Горизонтальная прокрутка */
+.scrollWrapper {
+  overflow-x: auto;
+  overflow-y: visible;
+  scrollbar-width: thin;
+  scrollbar-color: #ffd966 #1a2f4e;
+  padding-bottom: 1rem;
+}
+
+.scrollWrapper::-webkit-scrollbar {
+  height: 6px;
+}
+
+.scrollWrapper::-webkit-scrollbar-track {
+  background: #1a2f4e;
+  border-radius: 3px;
+}
+
+.scrollWrapper::-webkit-scrollbar-thumb {
+  background: #ffd966;
+  border-radius: 3px;
+}
+
+/* Сетка — горизонтальный флекс с отступами */
+.alumniGrid {
+  display: flex;
+  gap: 1.8rem;
+  width: max-content;
+  padding: 0.5rem 0.2rem;
+}
+
+/* Горизонтальная карточка: соотношение сторон 3:2, общая ширина ~600px */
+.alumniCard {
+  display: flex;
+  width: 700px;          /* фиксированная ширина для десктопа */
+  height: 380px;         /* высота меньше ширины */
+  background: white;
+  border-radius: 28px;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 217, 102, 0.2);
+}
+
+.alumniCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.25);
+  border-color: rgba(255, 217, 102, 0.5);
+}
+
+/* Левая часть (фото) — 2/3 от ширины карточки. 660 * 2/3 = 440px */
+.cardImage {
+  width: 66.666%;       /* 2/3 */
+  height: 100%;
+  overflow: hidden;
+  background-color: #1e2f4b;
+}
+
+.cardImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.alumniCard:hover .cardImage img {
+  transform: scale(1.03);
+}
+
+/* Правая часть (жёлтый блок) — 1/3 */
+.cardContent {
+  width: 33.333%;       /* 1/3 */
+  background-color: #ffdd66;   /* жёлтый фон */
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;     /* если список длинный — свой скролл */
+  text-align: left;
+  align-items: flex-start;
+}
+
+/* Номер группы */
+.groupNumber {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin: 0 0 1rem 0;
+  color: #1e3a5f;
+  border-left: 5px solid #1e3a5f;
+  padding-left: 0.8rem;
+}
+
+/* Список студентов */
+.alumniList {
+  margin: 0;
+  padding-left: 1rem;
+  font-size: 0.8rem;
+  line-height: 0.9;
+  color: #1e3a5f;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.alumniList li {
+  margin-bottom: 0.1rem;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+  .alumniCard {
+    width: 79vw;        /* ширина почти на весь экран */
+    height: auto;       /* высота автоматическая — вертикальная ориентация */
+    flex-direction: column; /* фото сверху, жёлтый блок внизу */
+    display: flex;
+  }
+
+  .cardImage {
+    width: 100%;        /* фото на всю ширину */
+    height: 220px;      /* фиксированная высота фото */
+  }
+
+  .cardContent {
+    flex: 1; 
+    width: 100%;        /* жёлтая область на всю ширину */
+    overflow-y: visible;
+    padding: 1rem;
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .groupNumber {
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .alumniList {
+    font-size: 0.8rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* две колонки для экономии места */
+    column-gap: 2rem;
+    padding-left: 1rem;
+    padding-right: 1.5rem;
+  }
+
+  .alumniList li {
+    margin-bottom: 0.1rem;
+  }
+}
+
+/* Модальное окно (увеличенное фото) */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.modalContent {
+  max-width: 90vw;
+  max-height: 90vh;
+  background: #fff;
+  border-radius: 24px;
+  padding: 1rem;
+  position: relative;
+  cursor: default;
+  box-shadow: 0 25px 40px rgba(0, 0, 0, 0.3);
+}
+
+.modalImage {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 12px;
+  display: block;
+}
+
+.modalCaption {
+  text-align: center;
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: #ffd966;
+  border: none;
+  font-size: 1.5rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.closeButton:hover {
+  background: #e6b800;
+}

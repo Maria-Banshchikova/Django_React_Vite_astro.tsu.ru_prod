@@ -1,32 +1,44 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# Игнорируем директорию с модулями Node.js
+node_modules/
 
-node_modules
-dist
-dist-ssr
-*.local
+# Временные и служебные файлы фронтенда
+.vite/
+.vite-temp/
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+# Директории бэкенда — игнорируем служебные файлы Python
+backend/**/__pycache__/
+backend/**/*.pyc
 
-backend/venv/
-backend/db.sqlite3
-frontend/node_modules/
-__pycache__/
+# Медиафайлы и статику (если не нужно хранить в репозитории)
+backend/media/
+backend/staticfiles/
 
-бэкенд.docx
+# Файлы Docker и точки входа — если не требуется версионировать
+.dockerignore
+docker-entrypoint.sh
+Dockerfile
+
+# Фронтенд — игнорируем собранную статику и временные файлы
+frontend/public/
+frontend/src/.vite/
+
+# Локальные конфигурационные файлы (окружения)
+.env
+.env.prod
+
+# Временные директории/файлы
 old/
+
+# Файлы компоновки Docker (если они генерируются или не нужны в репозитории)
+docker-compose.prod.yml
+docker-compose.yml
+
+# Файлы документации и прочие вспомогательные
+README.md
+
+# Логи и временные файлы (если присутствуют)
+*.log
+*.tmp
+
+# Исключения (если нужно сохранить какие-то из игнорируемых типов файлов)
+!docker-compose.yml 
