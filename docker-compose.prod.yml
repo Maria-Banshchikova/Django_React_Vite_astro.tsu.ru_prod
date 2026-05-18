@@ -1,0 +1,60 @@
+services:
+  # Сервис для PostgreSQL (база данных)
+  db:
+    image: postgres:17
+    container_name: astrotsu_db
+    env_file: .env.prod
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - internal
+    restart: always
+      
+  # Сервис для Django (backend)    
+  backend:
+    build:
+      context: ./backend  # Смотрит Dockerfile в текущей директории (.)
+      dockerfile: Dockerfile # Имя Dockerfile для бэкенда
+    platform: linux/amd64
+    container_name: astrotsu_backend
+    env_file: .env.prod
+    volumes:
+      # Монтируем папку для медиафайлов (будет создана на хосте)
+      - media_volume:/app/media
+      # Монтируем папку для собранных статических файлов (будет создана на хосте)
+      - static_volume:/app/staticfiles
+    depends_on:
+      - db # Дожидается старта сервиса базы данных
+    networks:
+      - internal
+    restart: always
+
+  # Сервис для React (frontend)
+  frontend:
+    build:
+      context: ./frontend # Смотрит Dockerfile в текущей директории (.)
+      dockerfile: Dockerfile # Переименуйте ваш фронтенд Dockerfile в Dockerfile, или укажите другое имя
+    container_name: astrotsu_frontend
+    ports:
+      - "80:80"
+      - "443:443"   # если HTTPS внутри контейнера
+      - ./ssl:/etc/nginx/ssl   
+    depends_on:
+      - backend
+    volumes:
+      - static_volume:/staticfiles   # путь должен совпадать с alias в nginx
+      - media_volume:/media          # путь должен совпадать с alias в nginx 
+    networks:
+      - internal
+      - default
+    restart: always
+  
+
+volumes:
+  postgres_data:
+  media_volume:
+  static_volume:
+
+networks:
+  internal:
+    driver: bridge

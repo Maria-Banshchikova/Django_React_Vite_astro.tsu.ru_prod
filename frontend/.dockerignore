@@ -1,0 +1,8 @@
+node_modules
+.git
+.vite
+.env
+.env.prod
+.dockerignore
+Dockerfile
+README.md

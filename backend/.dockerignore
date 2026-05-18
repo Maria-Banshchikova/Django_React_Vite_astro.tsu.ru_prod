@@ -1,0 +1,11 @@
+__pycache__
+*.pyc
+*.log
+.git
+.env
+.env.prod
+*.db
+.dockerignore
+Dockerfile
+README.md
+

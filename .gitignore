@@ -1,44 +1,11 @@
-# Игнорируем директорию с модулями Node.js
-node_modules/
-
-# Временные и служебные файлы фронтенда
 .vite/
+node_modules/
+old/
+staticfiles/
 .vite-temp/
-
-# Директории бэкенда — игнорируем служебные файлы Python
 backend/**/__pycache__/
 backend/**/*.pyc
-
-# Медиафайлы и статику (если не нужно хранить в репозитории)
-backend/media/
-backend/staticfiles/
-
-# Файлы Docker и точки входа — если не требуется версионировать
-.dockerignore
-docker-entrypoint.sh
-Dockerfile
-
-# Фронтенд — игнорируем собранную статику и временные файлы
-frontend/public/
 frontend/src/.vite/
-
-# Локальные конфигурационные файлы (окружения)
-.env
-.env.prod
-
-# Временные директории/файлы
-old/
-
-# Файлы компоновки Docker (если они генерируются или не нужны в репозитории)
-docker-compose.prod.yml
-docker-compose.yml
-
-# Файлы документации и прочие вспомогательные
-README.md
-
-# Логи и временные файлы (если присутствуют)
 *.log
 *.tmp
-
-# Исключения (если нужно сохранить какие-то из игнорируемых типов файлов)
-!docker-compose.yml 
+.gitignore
