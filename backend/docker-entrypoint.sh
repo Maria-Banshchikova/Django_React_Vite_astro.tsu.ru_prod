@@ -24,7 +24,7 @@ if admin_password and not User.objects.filter(username='admin').exists():
     User.objects.create_superuser(
         'admin',
         'admin@example.com',
-        admin_password
+        ADMIN_PASSWORD
     )
 EOF
 

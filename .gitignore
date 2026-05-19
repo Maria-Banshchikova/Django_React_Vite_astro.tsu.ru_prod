@@ -1,7 +1,7 @@
 .vite/
 node_modules/
 old/
-staticfiles/
+/staticfiles/
 .vite-temp/
 backend/**/__pycache__/
 backend/**/*.pyc
@@ -9,3 +9,5 @@ frontend/src/.vite/
 *.log
 *.tmp
 .gitignore
+.env.prod
+.git

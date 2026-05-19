@@ -26,7 +26,7 @@ EXPOSE 8000
 
 # Скрипт запуска приложения
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+RUN chmod +x ./docker-entrypoint.sh
 
 # Команда для запуска скрипта при старте контейнера
 CMD ["/docker-entrypoint.sh"]
