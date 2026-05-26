@@ -8,7 +8,5 @@ backend/**/*.pyc
 frontend/src/.vite/
 *.log
 *.tmp
-.gitignore
-.env.prod
 .git
 astrotsu-images.tar.gz
