@@ -1,16 +1,26 @@
-# React + Vite
+docker-compose -f docker-compose.prod.yml exec backend python manage.py migrate
+# Инструкция по запуску проекта
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Шаг 1. Подготовка файлов
+1. Загрузите на сервер:
+   * папку проекта с `docker-compose.prod.yml`;
+   * файлы `.env.prod`, `Dockerfile` для бэкенда и фронтенда;
+   * (опционально) папку `ssl/` с SSL‑сертификатами.
+2. Создайте структуру папок:
+   mkdir -p backend frontend ssl
 
-Currently, two official plugins are available:
+docker-compose -f docker-compose.prod.yml up -d
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+docker-compose -f docker-compose.prod.yml exec backend python manage.py migrate
 
-## React Compiler
+docker-compose -f docker-compose.prod.yml exec backend python manage.py collectstatic --noinput
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# Логи бэкенда
+docker-compose -f docker-compose.prod.yml logs backend
+# Логи фронтенда
+docker-compose -f docker-compose.prod.yml logs frontend
 
-## Expanding the ESLint configuration
+docker-compose -f docker-compose.prod.yml build
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+docker-compose -f docker-compose.prod.yml up -d
+

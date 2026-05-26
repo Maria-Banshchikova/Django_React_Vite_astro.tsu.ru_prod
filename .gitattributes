@@ -1,0 +1,14 @@
+# Нормализуем окончания строк для текстовых файлов
+* text=auto
+
+# Явно указываем формат для конкретных типов
+*.sh text eol=lf
+*.py text eol=lf
+*.js text eol=lf
+*.md text eol=lf
+*.gitignore text eol=lf
+
+# Бинарные файлы — не трогать
+*.png binary
+*.jpg binary
+*.zip binary

@@ -20,11 +20,12 @@ services:
     env_file: .env.prod
     volumes:
       # Монтируем папку для медиафайлов (будет создана на хосте)
-      - media_volume:/app/media
+      - /usr/share/nginx/media:/app/media
       # Монтируем папку для собранных статических файлов (будет создана на хосте)
-      - static_volume:/app/staticfiles
+      - /usr/share/nginx/staticfiles:/app/staticfiles
     depends_on:
       - db # Дожидается старта сервиса базы данных
+    command: "python manage.py collectstatic --noinput && gunicorn --bind 0.0.0.0:8000 --timeout 120 astro_tsu_admin.wsgi:application"
     networks:
       - internal
     restart: always
@@ -41,9 +42,8 @@ services:
     depends_on:
       - backend
     volumes:
-      - static_volume:/staticfiles   # путь должен совпадать с alias в nginx
-      - media_volume:/media          # путь должен совпадать с alias в nginx 
-      - ./ssl:/etc/nginx/ssl
+      - /usr/share/nginx/html:/app/dist
+    command: npm run build
     networks:
       - internal
       - default

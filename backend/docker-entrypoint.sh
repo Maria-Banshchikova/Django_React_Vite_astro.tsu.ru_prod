@@ -10,9 +10,6 @@ done
 echo "Applying migrations..."
 python manage.py migrate --noinput
 
-# Собираем статические файлы
-echo "Collecting static files..."
-python manage.py collectstatic --noinput
 
 # Создаём суперпользователя, если его нет
 echo "Creating superuser if not exists..."
@@ -27,7 +24,3 @@ if admin_password and not User.objects.filter(username='admin').exists():
         ADMIN_PASSWORD
     )
 EOF
-
-# Запускаем приложение
-echo "Starting Gunicorn..."
-exec gunicorn --bind 0.0.0.0:8000 --timeout 120 astro_tsu_admin.wsgi:application
