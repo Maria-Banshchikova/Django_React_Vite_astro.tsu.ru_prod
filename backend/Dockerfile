@@ -25,13 +25,8 @@ COPY . .
 EXPOSE 8000
 
 # Скрипт запуска приложения
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x ./docker-entrypoint.sh
+COPY docker-entrypoint.sh /app/docker-entrypoint.sh
+RUN chmod +x /app/docker-entrypoint.sh
 
 # Команда для запуска скрипта при старте контейнера
 CMD ["/docker-entrypoint.sh"]
-
-# Команда для запуска приложения с Gunicorn
-# В продакшене тут будет другой host, port и количество воркеров
-# Пока для локальной разработки можно оставить так, или использовать 'python manage.py runserver 0.0.0.0:8000'
-#CMD ["gunicorn", "--bind", "0.0.0.0:8000", "astro_tsu_admin.wsgi:application"]
