@@ -27,10 +27,43 @@ const TeachersSection = () => {
     loadTeachers();
   }, []);
 
-   return (
+  if (loading) {
+    return (
+      <section id="staff" className={styles.teachersSection}>
+        <div className={styles.container}>
+          <div className={styles.headerRow}>
+            <h2 className={styles.sectionTitle}>Наши преподаватели</h2>
+            <button className={styles.toggleButton} onClick={toggleBlock} aria-label="Показать преподавателей">
+              +
+            </button>
+          </div>
+          <p>Загрузка...</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section id="staff" className={styles.teachersSection}>
+        <div className={styles.container}>
+          <div className={styles.headerRow}>
+            <h2 className={styles.sectionTitle}>Наши преподаватели</h2>
+            <button className={styles.toggleButton} onClick={toggleBlock} aria-label="Показать преподавателей">
+              +
+            </button>
+          </div>
+          <p style={{ color: '#ffaaaa' }}>{error}</p>
+        </div>
+      </section>
+    );
+  }
+
+  // <section id="staff" className={styles.teachersSection}>
+  return (
     <section id="staff" className="teachersSection">
       <div className={styles.container}>
-        {/* Заголовок и кнопка */}
+        {/* Заголовок и кнопка в одной строке */}
         <div className={styles.headerRow}>
           <h2 className={styles.sectionTitle}>Наши преподаватели</h2>
           <button
@@ -42,7 +75,7 @@ const TeachersSection = () => {
           </button>
         </div>
 
-        {/* Описание — всегда отображается */}
+        {/* Новая информация под заголовком */}
         <div className={styles.teachersDescription}>
           <p>
             Коллектив кафедры включает ведущих специалистов в области астрономии,
@@ -53,18 +86,14 @@ const TeachersSection = () => {
           </p>
         </div>
 
-        {/* Условный контент: загрузка, ошибка или данные */}
-        {loading && <p>Загрузка...</p>}
-
-        {!loading && error && (
-          <p style={{ color: '#ffaaaa' }}>{error}</p>
+        {/* Сообщение об отсутствии данных */}
+        {teachers.length === 0 && !isOpen && (
+          <div>
+            <p>Пока нет данных о преподавателях. Загляните позже!</p>
+          </div>
         )}
 
-        {!loading && !error && teachers.length === 0 && (
-          <p>Пока нет данных о преподавателях. Загляните позже!</p>
-        )}
-
-        {!loading && !error && isOpen && (
+        {isOpen && (
           <div className={styles.grid}>
             {teachers.map((item) => (
               <div key={item.id} className={styles.card}>
