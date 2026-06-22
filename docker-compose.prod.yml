@@ -35,6 +35,7 @@ services:
 #    build:
 #      context: ./frontend # Смотрит Dockerfile в текущей директории (.)
 #      dockerfile: Dockerfile # Переименуйте ваш фронтенд Dockerfile в Dockerfile, или укажите другое имя
+    image: nginx:alpine  # добавила
     container_name: astrotsu_frontend
     ports:
       - "80:80"
