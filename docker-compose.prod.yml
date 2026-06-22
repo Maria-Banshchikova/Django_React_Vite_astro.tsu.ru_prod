@@ -32,9 +32,9 @@ services:
 
   # Сервис для React (frontend)
   frontend:
-    build:
-      context: ./frontend # Смотрит Dockerfile в текущей директории (.)
-      dockerfile: Dockerfile # Переименуйте ваш фронтенд Dockerfile в Dockerfile, или укажите другое имя
+#    build:
+#      context: ./frontend # Смотрит Dockerfile в текущей директории (.)
+#      dockerfile: Dockerfile # Переименуйте ваш фронтенд Dockerfile в Dockerfile, или укажите другое имя
     container_name: astrotsu_frontend
     ports:
       - "80:80"
@@ -42,7 +42,8 @@ services:
     depends_on:
       - backend
     volumes:
-      - /usr/share/nginx/html:/app/dist
+#      - /usr/share/nginx/html:/app/dist  # было
+       - ./frontend/dist:/usr/share/nginx/html:ro
     command: npm run build
     networks:
       - internal

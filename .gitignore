@@ -10,3 +10,4 @@ frontend/src/.vite/
 *.tmp
 .git
 astrotsu-images.tar.gz
+dist/
