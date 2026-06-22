@@ -29,4 +29,4 @@ COPY docker-entrypoint.sh /app/docker-entrypoint.sh
 RUN chmod +x /app/docker-entrypoint.sh
 
 # Команда для запуска скрипта при старте контейнера
-CMD ["/docker-entrypoint.sh"]
+CMD ["/app/docker-entrypoint.sh"]
