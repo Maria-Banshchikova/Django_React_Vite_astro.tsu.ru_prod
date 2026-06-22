@@ -25,7 +25,7 @@ services:
       - /usr/share/nginx/staticfiles:/app/staticfiles
     depends_on:
       - db # Дожидается старта сервиса базы данных
-    command: "python manage.py collectstatic --noinput && gunicorn --bind 0.0.0.0:8000 --timeout 120 astro_tsu_admin.wsgi:application"
+#    command: "python manage.py collectstatic --noinput && gunicorn --bind 0.0.0.0:8000 --timeout 120 astro_tsu_admin.wsgi:application" # эти команды есть docker-entrypoint.sh
     networks:
       - internal
     restart: always
@@ -45,7 +45,7 @@ services:
     volumes:
 #      - /usr/share/nginx/html:/app/dist  # было
        - ./frontend/dist:/usr/share/nginx/html:ro
-#       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro  # расскоментировать для локального запуска админки
+#       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro  # расскоментировать для локального запуска админки и поменять на Debug=True
 #    command: npm run build
     networks:
       - internal
