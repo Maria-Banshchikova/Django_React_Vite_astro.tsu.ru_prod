@@ -45,7 +45,7 @@ services:
     volumes:
 #      - /usr/share/nginx/html:/app/dist  # было
        - ./frontend/dist:/usr/share/nginx/html:ro
-    command: npm run build
+#    command: npm run build
     networks:
       - internal
       - default
