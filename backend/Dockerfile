@@ -13,6 +13,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     libpq-dev \
     libc6-dev \
+    libjpeg-dev \
+    zlib1g-dev \    
     netcat-openbsd \
     && rm -rf /var/lib/apt/lists/*
 # --no-cache-dir чтобы уменьшить размер образа
