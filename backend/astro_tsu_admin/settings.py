@@ -131,8 +131,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_URL = "/static/"
+STATIC_ROOT = "/app/staticfiles"
 
 REST_FRAMEWORK = {
     # Здесь можно будет настроить права доступа, пагинацию и т.д.
@@ -141,13 +141,15 @@ REST_FRAMEWORK = {
 }
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = "/app/media"
 
-# Настройки CORS для связи с React-приложением
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Адрес, где по умолчанию запускается Vite
-    "http://127.0.0.1:3000",
-]
+# Получаем разрешённые источники из .env, если не задано — оставляем пустой список или дефолт для разработки
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
+if not CORS_ALLOWED_ORIGINS:
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ]
 # Для разработки можно временно разрешить все источники,
 # но на боевом сервере это категорически не рекомендуется.
 # CORS_ALLOW_ALL_ORIGINS = True
