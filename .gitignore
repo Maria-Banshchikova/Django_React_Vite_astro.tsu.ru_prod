@@ -11,4 +11,7 @@ frontend/src/.vite/
 .git
 astrotsu-images.tar.gz
 dist/
+frontend/nginx.conf
+nginx/nginx-example.conf
+data/
 nginx.conf

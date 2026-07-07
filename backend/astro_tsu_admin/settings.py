@@ -19,7 +19,7 @@ DATABASES = {
 }
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-secret-key-for-dev")
+SECRET_KEY = os.environ["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
@@ -131,8 +131,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_URL = "/static/"
+STATIC_ROOT = "/app/staticfiles"
 
 REST_FRAMEWORK = {
     # Здесь можно будет настроить права доступа, пагинацию и т.д.
@@ -141,25 +141,30 @@ REST_FRAMEWORK = {
 }
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = "/app/media"
 
-# Настройки CORS для связи с React-приложением
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Адрес, где по умолчанию запускается Vite
-    "http://127.0.0.1:3000",
-]
-# Для разработки можно временно разрешить все источники,
-# но на боевом сервере это категорически не рекомендуется.
-# CORS_ALLOW_ALL_ORIGINS = True
+# Получаем разрешённые источники из .env, если не задано — оставляем пустой список или дефолт для разработки
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
+if not CORS_ALLOWED_ORIGINS:
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ]
 
 CKEDITOR_5_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 CKEDITOR_5_UPLOAD_PATH = "uploads/"
+
+# Добавляем защитные заголовки
+X_FRAME_OPTIONS = 'DENY'
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
 
 # Безопасность
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
+
 # CSRF доверенные источники (если используете формы на том же домене)
 CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',')
 # CORS (если API вызывается с фронта на том же домене – можно не включать, но на всякий случай)
